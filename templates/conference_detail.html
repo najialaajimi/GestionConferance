@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Detail</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">{{ conference.title }}</h1>
+        <p><strong>Start Date:</strong> {{ conference.start_date }}</p>
+        <p><strong>End Date:</strong> {{ conference.end_date }}</p>
+        <p><strong>Location:</strong> {{ conference.location }}</p>
+        <p><strong>Price:</strong> ${{ conference.price }}</p>
+        <p><strong>Capacity:</strong> {{ conference.capacity }}</p>
+        <p><strong>Category:</strong> {{ conference.category }}</p>
+        
+        <div class="mt-4">
+            <h3>Reservations</h3>
+            {% if reservations %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Email</th>
+                            <th>Category</th>
+                            <th>Confirmed</th>
+                            <th>Reservation Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.participant.first_name }} {{ reservation.participant.last_name }}</td>
+                            <td>{{ reservation.participant.email }}</td>
+                            <td>{{ reservation.participant.participant_category }}</td>
+                            <td>
+                                {% if reservation.confirmed %}
+                                    <span class="badge badge-success">Confirmed</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ reservation.reservation_date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No reservations yet for this conference.</p>
+            {% endif %}
+        </div>
+        
+        <a href="{% url 'conference_update' conference.id %}" class="btn btn-secondary">Edit</a>
+        <a href="{% url 'conference_delete' conference.id %}" class="btn btn-danger">Delete</a>
+        <a href="{% url 'conference_list' %}" class="btn btn-primary">Back to List</a>
+    </div>
+</body>
+</html>
